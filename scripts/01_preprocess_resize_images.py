@@ -5,7 +5,7 @@ import hashlib
 
 # Paths (change if needed)
 ROOT = r"D:/leaflookalike-detector"
-SRC_TRAIN = os.path.join(ROOT, "dataset", "train")
+SRC_TRAIN = os.path.join(ROOT, "dataset_raw", "train")
 DST_PREP_TRAIN = os.path.join(ROOT, "dataset_preprocessed", "train")
 
 TARGET_SIZE = (224, 224)   # MobileNetV3 standard
