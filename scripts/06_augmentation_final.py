@@ -18,7 +18,10 @@ for root in [output_rgb_root, output_vein_root, output_texture_root]:
 # Augmentation pipeline
 transform = A.Compose([
     A.Rotate(limit=25, border_mode=cv2.BORDER_REFLECT_101, p=1.0),
-    A.Flip(p=0.5),
+    A.OneOf([
+    A.HorizontalFlip(p=0.5),
+    A.VerticalFlip(p=0.5)
+    ], p=0.5),
     A.RandomScale(scale_limit=0.15, interpolation=cv2.INTER_LINEAR, p=0.7),
     A.ShiftScaleRotate(shift_limit=0.1, scale_limit=0, rotate_limit=0,
                        border_mode=cv2.BORDER_REFLECT_101, p=0.7)
