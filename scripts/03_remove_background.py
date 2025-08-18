@@ -3,33 +3,53 @@ from rembg import remove
 from PIL import Image
 from io import BytesIO
 
-# Input and output folder paths
-input_folder = r"D:\leaflookalike-detector\dataset_augmented_1\train\alpinia_galanga"     # Folder containing your images
-output_folder = r"D:\leaflookalike-detector\dataset_bg_removed\alpinia_galanga"   # Folder to save processed images
+# Base input and output directories
+base_input_dir = r"D:\leaflookalike-detector\dataset_augmented_1\train"
+base_output_dir = r"D:\leaflookalike-detector\dataset_bg_removed\train"
 
-# Create output folder if it doesn't exist
-os.makedirs(output_folder, exist_ok=True)
+# List of folder names
+folder_names = [
+    "alpinia_galanga",
+    "azadirachta_indica",
+    "basella_alba",
+    "jasminum",
+    "mentha",
+    "murraya_koenigii",
+    "nerium_oleander",
+    "plectranthus_amboinicus",
+    "syzygium_jambos",
+    "trigonella_foenum_graecum"
+]
 
-# Loop through all images in the input folder
-for filename in os.listdir(input_folder):
-    if filename.lower().endswith((".png", ".jpg", ".jpeg", ".webp")):
-        input_path = os.path.join(input_folder, filename)
+for folder_name in folder_names:
+    input_folder = os.path.join(base_input_dir, folder_name)
+    output_folder = os.path.join(base_output_dir, folder_name)
 
-        # Open image and remove background
-        with open(input_path, "rb") as f:
-            removed_bg = remove(f.read())
+    # Create output folder if it doesn't exist
+    os.makedirs(output_folder, exist_ok=True)
 
-        # Convert bytes back to an image
-        img = Image.open(BytesIO(removed_bg)).convert("RGBA")
+    # Process each image in the current input folder
+    for filename in os.listdir(input_folder):
+        if filename.lower().endswith((".png", ".jpg", ".jpeg", ".webp")):
+            input_path = os.path.join(input_folder, filename)
 
-        # Create a black background
-        black_bg = Image.new("RGBA", img.size, (0, 0, 0, 255))
+            # Open image and remove background
+            with open(input_path, "rb") as f:
+                removed_bg = remove(f.read())
 
-        # Paste the foreground object onto the black background
-        final_img = Image.alpha_composite(black_bg, img)
+            # Convert bytes back to an image
+            img = Image.open(BytesIO(removed_bg)).convert("RGBA")
 
-        # Save result
-        output_path = os.path.join(output_folder, filename)
-        final_img.convert("RGB").save(output_path, "PNG")
+            # Create a black background
+            black_bg = Image.new("RGBA", img.size, (0, 0, 0, 255))
 
-print("Background removed and replaced with black for all images.")
+            # Paste the foreground object onto the black background
+            final_img = Image.alpha_composite(black_bg, img)
+
+            # Save result as PNG
+            output_path = os.path.join(output_folder, os.path.splitext(filename)[0] + ".png")
+            final_img.convert("RGB").save(output_path, "PNG")
+
+    print(f"Done processing: {folder_name}")
+
+print("Background removed and replaced with black for all folders.")
