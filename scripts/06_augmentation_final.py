@@ -30,9 +30,9 @@ transform = A.Compose(
 )
 
 classes = [
-    "alpinia_galanga"#, "azadirachta_indica", "basella_alba", "jasminum",
-    #"mentha", "murraya_koenigii", "nerium_oleander", "plectranthus_amboinicus",
-    #"syzygium_jambos", "trigonella_foenum_graecum"
+    "alpinia_galanga", "azadirachta_indica", "basella_alba", "jasminum",
+    "mentha", "murraya_koenigii", "nerium_oleander", "plectranthus_amboinicus",
+    "syzygium_jambos", "trigonella_foenum_graecum"
 ]
 
 for cls in classes:
